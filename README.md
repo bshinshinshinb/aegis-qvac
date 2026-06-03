@@ -53,19 +53,35 @@ Full build guide & rubric mapping: `docs/ARCHITECTURE.md`.
 | `AUDIT_FORMAT.md` | Audit-log schema |
 | `LICENSE` | Apache-2.0 (required by the hackathon) |
 
-## Run (on the laptop = the declared demo device)
+## Targets
+- **Primary (demo):** iPhone 17 Pro — fully-offline Expo (React Native) app. `app/` (Expo) — *to be scaffolded on the Mac.*
+- **Quick API testing:** Node hello-world on the MacBook (below) — fastest way to validate the audited core loop before wiring the RN UI.
+- **P2P delegation:** optional stretch (both devices are ~8 GB, so not the centerpiece).
+
+### Node quick-test (MacBook)
 ```bash
 node --version   # requires Node >= 20
 npm install
 npm run hello    # loads a model, runs one audited completion, writes audit/run.jsonl
 ```
-> `src/index.js` currently uses a placeholder small LLM. Swap in the **MedPsy** model
-> constant once its exact `@qvac/sdk` export + `modelType` are confirmed.
+> `src/index.js` uses a placeholder small LLM. Swap in the **MedPsy** constant once its
+> exact `@qvac/sdk` export + `modelType` are confirmed (Discord Q1).
+
+### iOS app (Expo) — scaffold on the Mac
+```bash
+# Requires Xcode + an Apple ID (free provisioning is fine for on-device testing)
+npx create-expo-app app && cd app
+# add @qvac/sdk + addons (Expo-supported), reuse src/audit.js + src/agents.js logic
+npx expo run:ios --device   # deploy to the iPhone 17 Pro
+```
+> Confirm the `@qvac/sdk` + addon (OCR/STT/TTS/embeddings) install + import story under
+> **Expo/iOS** before building the UI (Discord Q3) — do not assume parity with Node.
 
 ## Hardware (declared for verification)
-- **Main device (General/Psy):** laptop, ≤ 32 GB RAM — *fill in CPU/GPU/RAM/storage + system-profiler screenshot before submission.*
-- **P2P client:** phone (Android/iOS) — *fill in model.*
-- **Fine-tuning only:** single consumer GPU (RTX 4090) — produces the LoRA; **not** used for demo inference (no-cluster rule).
+- **Phone (primary demo device):** iPhone 17 Pro (A19 Pro), iOS — Expo client.
+- **Laptop:** MacBook, **8 GB RAM** (Apple Silicon — *confirm chip + macOS + free disk*). Dev machine + optional P2P peer.
+- **Fine-tuning only:** single RTX 4090 — produces the LoRA; **not** used for demo inference (no-cluster rule).
+- *Memory note:* 8 GB is tight → use the smallest MedPsy + Q4, and load/unload models sequentially (one resident at a time).
 
 ## ⚠️ Open API questions (confirm before filling stubs — do NOT guess)
 The README upstream documents only the **core LLM lifecycle** (`loadModel`/`completion`/
