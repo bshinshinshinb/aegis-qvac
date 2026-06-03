@@ -48,7 +48,8 @@ Full build guide & rubric mapping: `docs/ARCHITECTURE.md`.
 | `src/audit.js` | **Audit-logging wrapper** over the QVAC core lifecycle (model loads/unloads, prompt, TTFT, tokens/sec) → `audit/run.jsonl` |
 | `src/index.js` | Minimal runnable hello-world proving the audited core loop |
 | `src/agents.js` | Multi-agent skeleton (orchestrator + intake/retrieval/reasoning/safety/output) |
-| `src/tools.js` | Addon wrappers (OCR/STT/TTS/embeddings/RAG) — **stubbed pending confirmed addon APIs** |
+| `src/tools.js` | Capability wrappers via high-level `@qvac/sdk` functions: **OCR / embeddings / RAG implemented**; STT/TTS pending signature confirmation |
+| `docs/QVAC_API.md` | **Verified** QVAC SDK API reference (model loading, OCR/embed/RAG, tools, P2P, Fabric, Expo/iOS) |
 | `docs/ARCHITECTURE.md` | Full spec, rubric mapping, demo & audit plan |
 | `AUDIT_FORMAT.md` | Audit-log schema |
 | `LICENSE` | Apache-2.0 (required by the hackathon) |
@@ -68,14 +69,20 @@ npm run hello    # loads a model, runs one audited completion, writes audit/run.
 > exact `@qvac/sdk` export + `modelType` are confirmed (Discord Q1).
 
 ### iOS app (Expo) — scaffold on the Mac
+**Requirements (verified):** iOS **17+, arm64, Metal, physical device only (NO simulator)**,
+**Expo ≥ 54**, Xcode + an Apple ID (free provisioning works for on-device testing).
 ```bash
-# Requires Xcode + an Apple ID (free provisioning is fine for on-device testing)
 npx create-expo-app app && cd app
-# add @qvac/sdk + addons (Expo-supported), reuse src/audit.js + src/agents.js logic
-npx expo run:ios --device   # deploy to the iPhone 17 Pro
+npm i @qvac/sdk react-native-bare-kit@^0.11.5 bare-rpc@^1.0.0
+npm i -D bare-pack@^1.5.1
+npx expo install expo-file-system expo-build-properties expo-device
+# app.json -> expo.plugins: ["@qvac/sdk/expo-plugin", ["expo-build-properties", {...}]]
+npx expo prebuild
+npx expo run:ios --device     # deploy to the iPhone 17 Pro (real device)
 ```
-> Confirm the `@qvac/sdk` + addon (OCR/STT/TTS/embeddings) install + import story under
-> **Expo/iOS** before building the UI (Discord Q3) — do not assume parity with Node.
+On Expo we call the **high-level SDK functions** (`loadModel`/`completion`/`ocr`/`embed`/
+`ragSearch`/`transcribe`) and reuse the `src/` logic — NOT the Bare addon classes.
+See `docs/QVAC_API.md` for verified signatures.
 
 ## Hardware (declared for verification)
 - **Phone (primary demo device):** iPhone 17 Pro (A19 Pro), iOS — Expo client.
@@ -83,14 +90,18 @@ npx expo run:ios --device   # deploy to the iPhone 17 Pro
 - **Fine-tuning only:** single RTX 4090 — produces the LoRA; **not** used for demo inference (no-cluster rule).
 - *Memory note:* 8 GB is tight → use the smallest MedPsy + Q4, and load/unload models sequentially (one resident at a time).
 
-## ⚠️ Open API questions (confirm before filling stubs — do NOT guess)
-The README upstream documents only the **core LLM lifecycle** (`loadModel`/`completion`/
-`unloadModel`). These must be confirmed on the Tether Discord / `docs.qvac.tether.io`
-before `src/tools.js` and the P2P/Fabric paths are implemented:
-1. **MedPsy + LoRA** — load MedPsy via `loadModel`? apply a Fabric LoRA adapter on a single device? exact `modelSrc`/`modelType`?
-2. **P2P delegation (Holepunch)** — usable from an Expo/mobile client to a Node/laptop peer today? API to delegate a `completion`?
-3. **Addons** — `ocr-onnx`, Parakeet/Whisper STT, `onnx-tts`, `llamacpp-embed`, `rag` signatures; native tool-/function-calling helper?
-4. **Early-bird** bonus cutoff — June 14 or 17?
+## API status — mostly RESOLVED (see `docs/QVAC_API.md`)
+Verified from the QVAC docs/examples + MedPsy blog:
+- ✅ **MedPsy** — load `MedPsy-1.7B` (Q4_K_M ≈1.28 GB) via a HF GGUF **URL** (not a built-in constant). Base = Qwen3-1.7B.
+- ✅ **OCR / embeddings / RAG** — SDK functions `ocr()`, `embed()`, `ragIngest/ragSearch` (implemented in `src/tools.js`).
+- ✅ **Tool calling** — first-class in `completion({ tools:[…] })` with `modelConfig:{tools:true}`.
+- ✅ **Fabric LoRA** — SDK `finetune()` or the `qvac-rnd-fabric-llm-finetune` CLI; load adapter via `modelConfig.lora`.
+- ✅ **P2P delegation** — `startQVACProvider()` + `loadModel({ delegate:{…} })` (works, early; stretch goal).
+
+**Still to confirm (2 items):**
+1. Exact **MedPsy HF repo id + filename** (open https://huggingface.co/qvac in a browser, copy the `resolve/main/…gguf` URL).
+2. **STT/TTS** SDK signatures + model constants (`transcribe()` model; SDK `tts()` vs `@qvac/tts-onnx`) — confirm in `node_modules/@qvac/sdk/dist/*.d.ts`.
+3. **Early-bird** bonus cutoff — June 14 or 17 (organizers only).
 
 ## License
 Apache-2.0. Not affiliated with or endorsed by Tether.

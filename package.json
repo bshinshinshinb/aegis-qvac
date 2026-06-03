@@ -12,5 +12,5 @@
   "dependencies": {
     "@qvac/sdk": "*"
   },
-  "//deps-note": "Addon packages (ocr-onnx, lib-infer-parakeet/whispercpp STT, lib-infer-onnx-tts, lib-infer-llamacpp-embed, rag) to be pinned once exact names/versions are confirmed from docs.qvac.tether.io / Discord. Do NOT guess versions."
+  "//deps-note": "On Expo/iOS we use the high-level @qvac/sdk functions (ocr/embed/ragSearch/transcribe), not the low-level @qvac/*-onnx Bare addon classes. The Expo app (app/) adds react-native-bare-kit, bare-rpc, bare-pack + expo-* deps — see docs/QVAC_API.md. Pin a current @qvac/sdk version (API ref is v0.11.x)."
 }
