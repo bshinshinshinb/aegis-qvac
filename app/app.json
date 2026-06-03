@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "Aegis",
+    "slug": "aegis-qvac",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "newArchEnabled": true,
+    "ios": {
+      "bundleIdentifier": "com.aegis.qvac",
+      "supportsTablet": false
+    },
+    "plugins": [
+      ["expo-build-properties", { "ios": { "deploymentTarget": "17.0" }, "android": { "minSdkVersion": 29 } }],
+      "@qvac/sdk/expo-plugin"
+    ]
+  }
+}

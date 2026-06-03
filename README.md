@@ -55,7 +55,7 @@ Full build guide & rubric mapping: `docs/ARCHITECTURE.md`.
 | `LICENSE` | Apache-2.0 (required by the hackathon) |
 
 ## Targets
-- **Primary (demo):** iPhone 17 Pro — fully-offline Expo (React Native) app. `app/` (Expo) — *to be scaffolded on the Mac.*
+- **Primary (demo):** iPhone 17 Pro — fully-offline Expo app. **`app/` scaffolded** (`App.tsx` chat + `lib/pipeline.ts` OCR→RAG→MedPsy→safety + `app.json`); generate the Expo shell on the Mac per `app/README.md`.
 - **Quick API testing:** Node hello-world on the MacBook (below) — fastest way to validate the audited core loop before wiring the RN UI.
 - **P2P delegation:** optional stretch (both devices are ~8 GB, so not the centerpiece).
 
