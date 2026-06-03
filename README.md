@@ -98,9 +98,9 @@ Verified from the QVAC docs/examples + MedPsy blog:
 - ✅ **Fabric LoRA** — SDK `finetune()` or the `qvac-rnd-fabric-llm-finetune` CLI; load adapter via `modelConfig.lora`.
 - ✅ **P2P delegation** — `startQVACProvider()` + `loadModel({ delegate:{…} })` (works, early; stretch goal).
 
-**Still to confirm (2 items):**
-1. Exact **MedPsy HF repo id + filename** (open https://huggingface.co/qvac in a browser, copy the `resolve/main/…gguf` URL).
-2. **STT/TTS** SDK signatures + model constants (`transcribe()` model; SDK `tts()` vs `@qvac/tts-onnx`) — confirm in `node_modules/@qvac/sdk/dist/*.d.ts`.
+**Still to confirm:**
+1. ✅ ~~MedPsy HF URL~~ — **confirmed:** `…/resolve/main/medpsy-1.7b-q4_k_m-imat.gguf` (1.28 GB).
+2. **STT/TTS** SDK signatures + model constants (`transcribe()` model; SDK `tts()` vs `@qvac/tts-onnx`) — confirm in `node_modules/@qvac/sdk/dist/*.d.ts` after `npm install`.
 3. **Early-bird** bonus cutoff — June 14 or 17 (organizers only).
 
 ## License

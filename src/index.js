@@ -9,9 +9,9 @@
 import { QWEN3_1_7B_INST_Q4 } from "@qvac/sdk";
 import { auditedLoadModel, auditedUnloadModel, complete, AUDIT_PATH } from "./audit.js";
 
-// MedPsy-1.7B, Q4_K_M (~1.28 GB) — right size for an 8 GB device.
+// MedPsy-1.7B, Q4_K_M (~1.28 GB) — confirmed from qvac/MedPsy-1.7B-GGUF (lowercase + "-imat").
 const MEDPSY_1_7B_Q4 =
-  "https://huggingface.co/qvac/MedPsy-1.7B-GGUF/resolve/main/MedPsy-1.7B-Q4_K_M.gguf"; // CONFIRM
+  "https://huggingface.co/qvac/MedPsy-1.7B-GGUF/resolve/main/medpsy-1.7b-q4_k_m-imat.gguf";
 // Fallback / base model (built-in constant) for offline dev before MedPsy URL is confirmed:
 const USE_FALLBACK = process.env.AEGIS_FALLBACK === "1";
 

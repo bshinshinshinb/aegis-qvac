@@ -20,12 +20,16 @@ Hyperdrive key, a `registry://…` URI, or a **built-in constant** (e.g. `QWEN3_
 - **For the 8 GB iPhone 17 Pro → MedPsy-1.7B, Q4_K_M (~1.28 GB) or Q5_K_M (~1.47 GB).**
 ```js
 const id = await loadModel({
-  modelSrc: "https://huggingface.co/qvac/MedPsy-1.7B-GGUF/resolve/main/MedPsy-1.7B-Q4_K_M.gguf", // CONFIRM exact id/filename
+  // CONFIRMED filename (lowercase + "-imat"): Q4_K_M 1.28 GB, Q5_K_M 1.47 GB
+  modelSrc: "https://huggingface.co/qvac/MedPsy-1.7B-GGUF/resolve/main/medpsy-1.7b-q4_k_m-imat.gguf",
   modelType: "llm",
   modelConfig: { device: "gpu", ctx_size: 2048 },
   onProgress: (p) => console.log(p.percentage),
 });
 ```
+> All MedPsy-1.7B GGUF files (confirmed): `bf16` (4.07 GB), `q8_0` (2.17 GB),
+> `q5_k_m-imat` (1.47 GB), `q4_k_m-imat` (1.28 GB), `iq4_nl-imat` (1.23 GB),
+> `iq4_xs-imat` (1.18 GB), `iq3_m-imat` (1.03 GB), `iq3_xxs-imat` (888 MB).
 
 ## Completion (with first-class tool calling)
 Load with `modelConfig:{ tools:true }`, pass `tools:[{ name, description, parameters: zodSchema, handler }]`.
