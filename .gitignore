@@ -1,0 +1,13 @@
+node_modules/
+*.log
+.env
+.DS_Store
+# QVAC model cache / downloaded weights (large; never commit)
+models/
+*.gguf
+*.onnx
+*.safetensors
+# audit logs are regenerated per run; keep the format doc, not the runs
+audit/*.jsonl
+# fine-tuning outputs (LoRA adapters live on the 4090 box; ship the small adapter only if needed)
+finetune/runs/

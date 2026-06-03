@@ -1,0 +1,16 @@
+{
+  "name": "aegis-qvac",
+  "version": "0.1.0",
+  "description": "Aegis — a fully on-device, private health companion built on the QVAC SDK + MedPsy. Research/education use only; not a medical device.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "hello": "node src/index.js",
+    "audit:tail": "tail -f audit/run.jsonl"
+  },
+  "dependencies": {
+    "@qvac/sdk": "*"
+  },
+  "//deps-note": "Addon packages (ocr-onnx, lib-infer-parakeet/whispercpp STT, lib-infer-onnx-tts, lib-infer-llamacpp-embed, rag) to be pinned once exact names/versions are confirmed from docs.qvac.tether.io / Discord. Do NOT guess versions."
+}
